@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { vertexShader, fragmentShader } from "./shaders";
 import * as THREE from "three";
-import { contain } from "three/src/extras/TextureUtils";
+
 
 const InversionLens = ({ src, className }) => {
   const containerRef = useRef(null);

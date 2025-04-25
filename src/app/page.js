@@ -1,7 +1,7 @@
 "use client";
 
-import InversionLens from "@/components/InversionLens/InversionLens";
+import BrushDistortionLens from "@/components/BrushDistortionLens";
 
 export default function Home() {
-  return <InversionLens src="/img2.jpeg" />;
+  return <BrushDistortionLens src="/img2.jpeg" />;
 }
