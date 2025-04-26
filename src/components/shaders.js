@@ -33,8 +33,8 @@ void main() {
 
   // Background turbulence (always moving a little)
   vec2 baseWarp = 0.01 * vec2(
-    sin(v_uv.y * 10.0 + u_time * 0.5),
-    cos(v_uv.x * 10.0 - u_time * 0.5)
+    sin(v_uv.y * 10.0 + u_time * 0.75),
+    cos(v_uv.x * 10.0 - u_time * 0.75)
   );
 
   // Additional turbulence where brush is active
@@ -52,4 +52,3 @@ void main() {
   gl_FragColor = color;
 }
 `;
-
