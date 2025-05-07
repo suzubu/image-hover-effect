@@ -1,12 +1,14 @@
+/* Global resets */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-.brush-distortion-lens {
+/* Full-screen canvas container */
+.inversion-lens {
   position: relative;
   width: 100vw;
-  height: 100svh;
+  height: 100svh; /* supports small viewport units on mobile */
   overflow: hidden;
 }
