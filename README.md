@@ -1,4 +1,4 @@
-# 🔍 InversionLens Shader 
+# 🔍 Image Hover Effect
 
 > A shader-based interactive lens that reveals a color image through a grayscale-inverting, turbulence-distorted circular mask. Built in React with Three.js and GLSL.
 
@@ -19,7 +19,7 @@ This project is written in React and WebGL (Three.js), using custom shaders for 
 
 ```bash
 # 1. Clone this repo
-git clone https://github.com/suzubu/img_hvr_effect.git
+git clone https://github.com/suzubu/image-hover-effect.git
 
 # 2. Install dependencies
 npm install
