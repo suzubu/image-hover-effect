@@ -19,7 +19,7 @@ This project is written in React and WebGL (Three.js), using custom shaders for 
 
 ```bash
 # 1. Clone this repo
-git clone https://github.com/suzubu/inversion-lens.git
+git clone https://github.com/suzubu/img_hvr_effect.git
 
 # 2. Install dependencies
 npm install
