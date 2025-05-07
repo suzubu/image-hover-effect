@@ -1,7 +1,7 @@
 "use client";
 
-import InversionLens from "@/components/InversionLens/InversionLens";
+import InversionLens from "@/components/InversionLens";
 
 export default function Home() {
-  return <InversionLens src="/img2.jpeg" />;
+  return <InversionLens src="/img.jpeg" />;
 }

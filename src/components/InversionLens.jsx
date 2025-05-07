@@ -3,32 +3,38 @@
 import { useEffect, useRef } from "react";
 import { vertexShader, fragmentShader } from "./shaders";
 import * as THREE from "three";
-import { contain } from "three/src/extras/TextureUtils";
 
 const InversionLens = ({ src, className }) => {
+  // Main container ref for the WebGL canvas
   const containerRef = useRef(null);
+
+  // Refs for Three.js scene elements and shader uniforms
   const rendererRef = useRef(null);
   const sceneRef = useRef(null);
   const cameraRef = useRef(null);
   const uniformsRef = useRef(null);
+
+  // Flag to track setup completion
   const isSetupCompleteRef = useRef(false);
 
+  // Configurable values for lens behavior and animation
   const config = {
-    maskRadius: 0.15,
-    maskSpeed: 0.75,
-    lerpFactor: 0.05,
-    radiusLerpSpeed: 0.1,
-    turbulenceIntensity: 0.075,
+    maskRadius: 0.15, // Default lens radius when active
+    maskSpeed: 0.75, // Speed of lens turbulence animation
+    lerpFactor: 0.05, // Smooth transition factor for mouse movement
+    radiusLerpSpeed: 0.1, // Smooth transition factor for lens radius
+    turbulenceIntensity: 0.075, // Jagged edge turbulence amount
   };
 
-  const targetMouse = useRef(new THREE.Vector2(0.5, 0.5));
-  const lerpedMouse = useRef(new THREE.Vector2(0.5, 0.5));
-  const targetRadius = useRef(0.0);
-  const isInView = useRef(false);
-  const isMouseInsideContainer = useRef(false);
-  const lastMouseX = useRef(0);
-  const lastMouseY = useRef(0);
-  const animationFrameId = useRef(null);
+  // Mouse-related refs
+  const targetMouse = useRef(new THREE.Vector2(0.5, 0.5)); // Actual mouse position
+  const lerpedMouse = useRef(new THREE.Vector2(0.5, 0.5)); // Interpolated mouse position for smoothing
+  const targetRadius = useRef(0.0); // Target lens radius
+  const isInView = useRef(false); // Whether component is in viewport
+  const isMouseInsideContainer = useRef(false); // Whether mouse is inside bounds
+  const lastMouseX = useRef(0); // Last mouse X position
+  const lastMouseY = useRef(0); // Last mouse Y position
+  const animationFrameId = useRef(null); // ID for canceling animation frame
 
   useEffect(() => {
     if (!containerRef.current || !src) return;
@@ -42,6 +48,7 @@ const InversionLens = ({ src, className }) => {
       isSetupCompleteRef.current = true;
     });
 
+    // Cleanup on component unmount
     return () => {
       if (animationFrameId.current) {
         cancelAnimationFrame(animationFrameId.current);
@@ -61,6 +68,7 @@ const InversionLens = ({ src, className }) => {
 
   const setupScene = (texture) => {
     if (!containerRef.current) return;
+
     const imageAspect = texture.image.width / texture.image.height;
     texture.minFilter = THREE.LinearMipMapLinearFilter;
     texture.magFilter = THREE.LinearFilter;
@@ -86,6 +94,7 @@ const InversionLens = ({ src, className }) => {
       u_turbulenceIntensity: { value: config.turbulenceIntensity },
     };
     uniformsRef.current = uniforms;
+
     const geometry = new THREE.PlaneGeometry(2, 2);
     const material = new THREE.ShaderMaterial({
       uniforms,
@@ -98,13 +107,13 @@ const InversionLens = ({ src, className }) => {
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     rendererRef.current = renderer;
-
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
     renderer.capabilities.anisotrophy = 16;
 
     containerRef.current.appendChild(renderer.domElement);
 
+    // Resize listener to update render size and resolution uniform
     const handleResize = () => {
       if (!containerRef.current || !rendererRef.current || !uniformsRef.current)
         return;
@@ -134,6 +143,7 @@ const InversionLens = ({ src, className }) => {
     document.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("scroll", handleScroll);
 
+    // Observer to check if component is in view
     let observer;
     if (containerRef.current) {
       observer = new IntersectionObserver(
@@ -170,6 +180,7 @@ const InversionLens = ({ src, className }) => {
     isMouseInsideContainer.current = inside;
 
     if (inside) {
+      // Normalize mouse position to local container space
       targetMouse.current.x = (x - rect.left) / rect.width;
       targetMouse.current.y = 1.0 - (y - rect.top) / rect.height;
       targetRadius.current = config.maskRadius;
@@ -188,6 +199,8 @@ const InversionLens = ({ src, className }) => {
       animationFrameId.current = requestAnimationFrame(animate);
       return;
     }
+
+    // Smoothly interpolate mouse position
     lerpedMouse.current.lerp(targetMouse.current, config.lerpFactor);
 
     uniformsRef.current.u_mouse.value.copy(lerpedMouse.current);
