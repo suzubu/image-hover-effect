@@ -1,4 +1,4 @@
-# 🔍 InversionLens Shader (Refined React Version)
+# 🔍 InversionLens Shader 
 
 > A shader-based interactive lens that reveals a color image through a grayscale-inverting, turbulence-distorted circular mask. Built in React with Three.js and GLSL.
 
