@@ -111,4 +111,4 @@ MIT — feel free to use, remix, and build upon it.
 
 ## 🙋‍♀️ Author
 
-Built by [suzubu](https://github.com/suzubu)
+Made with ☕ + 🎧 by [suzubu](https://github.com/suzubu)
